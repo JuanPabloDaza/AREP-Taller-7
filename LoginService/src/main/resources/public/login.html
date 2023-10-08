@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Servidor AWS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form action="#" method="post">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username">
+
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password">
+
+            <input type="submit" value="Iniciar Sesión" onclick="loginMsg()">
+            <br>
+            <input type="submit" value="Registrarse" onclick="signUpMsg()">
+            <div id="response"></div>
+        </form>
+    </div>
+    <script>
+        let hashedPassword;
+        function loginMsg() {
+            let username = document.getElementById("username").value;
+            hashPassword(function (hashedPassword) {
+                // Asegúrate de que hashedPassword esté definido antes de realizar la solicitud GET
+                if (hashedPassword) {
+                    const xhttp = new XMLHttpRequest();
+                    xhttp.onload = function () {
+                        console.log(this.status);
+                        if (this.status === 200) {
+                            // Si la respuesta del servidor es exitosa (código 200 OK),
+                            // redirige al usuario a signUp.html
+                            window.location.href = "/welcome.html";
+                        } else {
+                            // Maneja otros códigos de respuesta o errores aquí
+                            document.getElementById("response").innerHTML =
+                                "Ocurrió un error al procesar la solicitud.";
+                        }
+                    }
+                    xhttp.open("GET", "/login?username=" + username + "&password=" + hashedPassword);
+                    xhttp.send();
+                }
+            });
+        }
+        function hashPassword(callback) {
+            var passwordInput = document.getElementById("password");
+            var password = passwordInput.value;
+
+            // Verifica si el navegador admite la API de crypto.subtle para generar el hash
+            if (crypto.subtle) {
+                // Codifica la contraseña como una serie de bytes
+                var encoder = new TextEncoder();
+                var data = encoder.encode(password);
+
+                // Calcula el hash SHA-256 de la contraseña
+                crypto.subtle.digest("SHA-256", data).then(function (hash) {
+                    // Convierte el hash en una representación hexadecimal
+                    var hashArray = Array.from(new Uint8Array(hash));
+                    var hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+                    console.log("Contraseña hasheada (SHA-256): " + hashedPassword);
+
+                    // Llama al callback con el valor del hash
+                    callback(hashedPassword);
+                }).catch(function (error) {
+                    console.error("Error al calcular el hash: " + error);
+                });
+            } else {
+                console.error("El navegador no admite la API de crypto.subtle para generar hash.");
+            }
+        }
+        function signUpMsg() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (this.status === 200) {
+                    // Si la respuesta del servidor es exitosa (código 200 OK),
+                    // redirige al usuario a signUp.html
+                    window.location.href = "/signUp.html";
+                } else {
+                    // Maneja otros códigos de respuesta o errores aquí
+                    document.getElementById("response").innerHTML =
+                        "Ocurrió un error al procesar la solicitud.";
+                }
+            };
+            xhttp.open("GET", "/signUp");
+            xhttp.send();
+        }
+    </script>
+</body>
+
+</html>
