@@ -5,7 +5,7 @@ import static spark.Spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HelloService {
+public class LoginService {
 
     private static URLReader urlReader = new URLReader();
     private static Map<String, String> userdata = new HashMap<>();
@@ -16,6 +16,10 @@ public class HelloService {
         secure("keystore/ecikeystore.p12", "123456", null, null);
         userdata.put("juan", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3");
 
+        get("/connect", (req, res) -> {
+            return HttpConnection.remoteLogCall("/hello");
+        });
+        
         get("/hello", (req, res) -> "Hello Docker");
 
         get("/", (req, res) -> {
@@ -48,6 +52,8 @@ public class HelloService {
             res.redirect("/login.html", 200);
             return null;
         });
+        
+
     }
 
     private static void signUpUser(String username, String password){

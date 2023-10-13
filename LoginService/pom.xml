@@ -11,7 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <exec.mainClass>edu.escuelaing.arep.app.HelloService</exec.mainClass>
+        <exec.mainClass>edu.escuelaing.arep.app.LoginService</exec.mainClass>
 </properties>
 <!-- build configuration -->
     <build>

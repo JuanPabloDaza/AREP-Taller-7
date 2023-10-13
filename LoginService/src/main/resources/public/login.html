@@ -77,7 +77,10 @@
         }
         function signUpMsg() {
             const xhttp = new XMLHttpRequest();
+            console.log("Redireccion...");
             xhttp.onload = function () {
+                console.log("Entro...");
+
                 if (this.status === 200) {
                     // Si la respuesta del servidor es exitosa (código 200 OK),
                     // redirige al usuario a signUp.html
