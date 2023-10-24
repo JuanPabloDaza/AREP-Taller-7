@@ -1,6 +1,5 @@
 # AREP-Taller-7
 
-# AREP-Taller-6
 En este taller se tuvo como objetivo realizar un servidor web utilizando Spark que implementara llaves privadas para mantener la seguridad de las peticiones.
 
 ## Para ejecutar el programa
