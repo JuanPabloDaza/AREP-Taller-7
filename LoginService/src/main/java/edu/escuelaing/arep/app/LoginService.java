@@ -31,8 +31,7 @@ public class LoginService {
             String username = req.queryParams("username");
             String password = req.queryParams("password");
             if (authenticateUser(username, password)) {
-                res.redirect("/welcome.html", 200);
-                return null; // La redirección se encargará de la respuesta
+                return HttpConnection.remoteLogCall("/hello");
             } else {
                 res.status(401);
                 System.out.println(res.raw().toString()); 
